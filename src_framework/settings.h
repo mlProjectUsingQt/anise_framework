@@ -16,7 +16,7 @@ class CSettings
     // Helper functions
     static bool machine();
     static bool progress();
-    static bool msglog();
+    static bool log();
 
   private:
     static QMap<QString, QVariant> settings;
