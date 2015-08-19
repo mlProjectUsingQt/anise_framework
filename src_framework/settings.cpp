@@ -23,7 +23,7 @@ bool CSettings::progress()
     return CSettings::get("progress").toBool();
 }
 
-bool CSettings::msglog()
+bool CSettings::log()
 {
-    return CSettings::get("msglog").toBool();
+    return CSettings::get("log").toBool();
 }
