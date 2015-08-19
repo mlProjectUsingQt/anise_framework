@@ -73,7 +73,9 @@ void CFramework::main()
     QCommandLineOption dbg_function_option("dbg_function",
         "Show the function that printed a message into the console.");
     parser.addOption(dbg_function_option);
-
+    QCommandLineOption msglog("msglog",
+        "Show the function that prints message log");
+    parser.addOption(msglog);
     parser.process(*QCoreApplication::instance());
 
 
@@ -93,6 +95,7 @@ void CFramework::main()
 
     CSettings::set("progress", parser.isSet(progress_option));
     CSettings::set("dbg_function", parser.isSet(dbg_function_option));
+    CSettings::set("msglog",parser.isSet(msglog));
 
     // Load dynamic nodes and messages into their corresponsing factories.
     // ... The data nodes should be loaded first as the nodes use them.
