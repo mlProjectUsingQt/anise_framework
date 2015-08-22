@@ -1,6 +1,9 @@
 #ifndef LOGINFO_H
 #define LOGINFO_H
 
+#define tadasa
+
+
 
 #include <QDateTime>
 #include <QVariant>
@@ -10,7 +13,9 @@ class CLogInfo
 public:
 
   enum class ESource {null, node, framework};
+  #ifdef tadasa
   enum class EStatus {null,info,error,warning};
+  #endif
 
   CLogInfo();
 
@@ -25,20 +30,28 @@ public:
   QString srcString() const;
   void setSrc(ESource src);
 
+#ifdef tadasa
   EStatus status() const;
   QString statusString() const;
   void setStatus(EStatus state);
+#endif
 
+#ifdef tadasa
   QString msg() const;
   QString msgString() const;
   void setMsg(QString msg);
+#endif
+
+ // QVariant info() const;
+ // void setInfo(QString info);
+ // void setInfo(qint32 info);
 
   QString getSrc_name() const;
   void setName(QString src_name);
 
   QDateTime time() const;
   void setTime(QDateTime time);
-
+//QString m_msg;
 private:
   ESource m_src;
   EStatus m_status;

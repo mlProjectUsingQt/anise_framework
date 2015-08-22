@@ -1,15 +1,17 @@
-#include "nodestarttask.h"
-#include "../progressinfo.h"
-#include "../loginfo.h"
+#include "nodegatetask.h"
 #include "../settings.h"
-#include <QDebug>
+#include "../progressinfo.h"
+
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CNodeStartTask::CNodeStartTask(CNode &node, QObject *parent /* = 0 */)
+CNodeGateTask::CNodeGateTask(CNode &node, QString gate_name,
+    const CConstDataPointer &data, QObject *parent /* = 0 */)
     : QObject(parent)
     , m_node(node)
+    , m_gate_name(gate_name)
+    , m_data(data)
 {
 
 }
@@ -18,47 +20,41 @@ CNodeStartTask::CNodeStartTask(CNode &node, QObject *parent /* = 0 */)
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CNodeStartTask::run()
+void CNodeGateTask::run()
 {
-    bool success;
-    // Information about the starting progress of the node.
+    // Report that we are starting, if appropriate.
     CProgressInfo progress;
-    CLogInfo log;
     progress.setSrc(CProgressInfo::ESource::node);
+    progress.setState(CProgressInfo::EState::processing);
     progress.setName(m_node.getConfig().getName());
-    progress.setState(CProgressInfo::EState::init);
-    log.setSrc(CLogInfo::ESource::node);
-    log.setName(m_node.getConfig().getName());
 
-    // Should we log the process?
     if(CSettings::progress()) {
         progress.setMsg(CProgressInfo::EMsg::start);
         progress.printProgress();
     }
 
-    // Start initializing the node.
-    success = m_node.start();
+    // Enable the usage of the commit functions only while the data function
+    // ... is called.
+    m_node.m_allow_commit = true;
+    // Perform the actual processing of the data.
+    bool processed = m_node.data(m_gate_name, m_data);
+    // Dissalow the commit functions outside of the nodes' data function.
+    m_node.m_allow_commit = false;
 
-    // Shall we print that we are finished initializing?
-    if(success && CSettings::progress()) {
+    // If a Node did not process the data it was sent, try to process it
+    // ... in a generic way if we know how to treat the data.
+    if(!processed) {
+        m_node.genericData(m_gate_name, m_data);
+    }
+
+    // Report that we are finished processing, if apropriate.
+    if(CSettings::progress()) {
         progress.setMsg(CProgressInfo::EMsg::stop);
         progress.printProgress();
     }
 
-    // Report if we did not succeed.
-    if(!success) {
-        // Report the failure
-        progress.setMsg(CProgressInfo::EMsg::error);
-        progress.setInfo("Initialization failed.");
-        progress.printProgress();
-        log.setMsg("Initialization failed");
-        log.setStatus(CLogInfo::EStatus::error);
-        log.printMessage();
-    }
-
-    // Tell whoever is interested that the task has been finished (either
-    // ... successfull or not).
-    emit taskFinished(success);
+    // Tell whoever is interested that the task has been finished.
+    emit taskFinished();
 }
 
 //------------------------------------------------------------------------------

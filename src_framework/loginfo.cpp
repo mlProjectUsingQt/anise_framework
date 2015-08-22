@@ -226,3 +226,7 @@ void CLogInfo::setName(QString name)
     src_name = name;
 }
 
+void CLogInfo::setTime(QDateTime time)
+{
+    m_time = time;
+}
