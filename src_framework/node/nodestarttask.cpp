@@ -3,7 +3,7 @@
 #include "../loginfo.h"
 #include "../settings.h"
 #include <QDebug>
-#define tadasa
+
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -29,10 +29,8 @@ void CNodeStartTask::run()
     progress.setName(m_node.getConfig().getName());
     progress.setState(CProgressInfo::EState::init);
 
-#ifdef tadasa
     log.setSrc(CLogInfo::ESource::node);
     log.setName(m_node.getConfig().getName());
-#endif
     // Should we log the process?
     if(CSettings::progress()) {
         progress.setMsg(CProgressInfo::EMsg::start);
@@ -54,11 +52,9 @@ void CNodeStartTask::run()
         progress.setMsg(CProgressInfo::EMsg::error);
         progress.setInfo("Initialization failed.");
         progress.printProgress();
-      #ifdef tadasa
         log.setMsg("Initialization failed");
         log.setStatus(CLogInfo::EStatus::error);
         log.printMessage();
-    #endif
     }
 
     // Tell whoever is interested that the task has been finished (either

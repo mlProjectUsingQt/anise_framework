@@ -31,7 +31,7 @@ QString CLogInfo::toJsonString()
     log.insert(QString("source"), src);
 
     // Name
-    QString name = this->getSrc_name();
+    QString name = this->getSrcName();
     log.insert(QString("src_name"), name);
 
 
@@ -92,7 +92,7 @@ void CLogInfo::printMessage()
         }
         else {
             message.append("Node").
-                    append(this->getSrc_name()).
+                    append(this->getSrcName()).
                     append("\"");
         }
 
@@ -209,7 +209,7 @@ void CLogInfo::setMsg(QString msg)
 }
 
 
-QString CLogInfo::getSrc_name() const
+QString CLogInfo::getSrcName() const
 {
     if(m_src == ESource::framework) {
         // Ignore name if the source is the framework. The framework

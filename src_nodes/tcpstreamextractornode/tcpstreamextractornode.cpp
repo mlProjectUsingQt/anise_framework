@@ -123,12 +123,12 @@ bool CTcpStreamExtractorNode::data(QString gate_name,
             m_tcp_streams->addTcpPacket(packet);
         }
 
-        qDebug() << "TCP streams left open:" << m_tcp_streams->openStreamsCount();
-        qDebug() << "TCP streams closed:" << m_tcp_streams->closedStreamsCount();
-        info="TCP streams left open:" + QVariant(m_tcp_streams->openStreamsCount()).toString();
+        info = "TCP streams left open: " + QVariant(m_tcp_streams->openStreamsCount()).toString();
+        qDebug() << info;
         setLogInfo(info);
-        info="TCP streams closed:" + QVariant(m_tcp_streams->closedStreamsCount()).toString();
-        setLogInfo(info);        
+        info = "TCP streams closed: " + QVariant(m_tcp_streams->closedStreamsCount()).toString();
+        qDebug() << info;
+        setLogInfo(info);
 
         commit("out", m_tcp_streams);
         // Clear the memory used by m_tcp_streams.

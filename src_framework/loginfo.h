@@ -1,63 +1,49 @@
 #ifndef LOGINFO_H
 #define LOGINFO_H
 
-#define tadasa
-
-
-
 #include <QDateTime>
 #include <QVariant>
 
+
 class CLogInfo
 {
-public:
+  public:
 
-  enum class ESource {null, node, framework};
-  #ifdef tadasa
-  enum class EStatus {null,info,error,warning};
-  #endif
+    enum class ESource {null, node, framework};
+    enum class EStatus {null,info,error,warning};
 
-  CLogInfo();
+    CLogInfo();
 
-  // Convert this progress information to a string that we can show to the user.
-  QString toJsonString();
-  // Print the json representation of this log if is reporting
-  // ... is enabled.
-  void printMessage();
+    // Convert this progress information to a string that we can show to the user.
+    QString toJsonString();
+    // Print the json representation of this log if is reporting
+    // ... is enabled.
+    void printMessage();
 
+    ESource src() const;
+    QString srcString() const;
+    void setSrc(ESource src);
 
-  ESource src() const;
-  QString srcString() const;
-  void setSrc(ESource src);
+    EStatus status() const;
+    QString statusString() const;
+    void setStatus(EStatus state);
 
-#ifdef tadasa
-  EStatus status() const;
-  QString statusString() const;
-  void setStatus(EStatus state);
-#endif
+    QString msg() const;
+    QString msgString() const;
+    void setMsg(QString msg);
 
-#ifdef tadasa
-  QString msg() const;
-  QString msgString() const;
-  void setMsg(QString msg);
-#endif
+    QString getSrcName() const;
+    void setName(QString src_name);
 
- // QVariant info() const;
- // void setInfo(QString info);
- // void setInfo(qint32 info);
+    QDateTime time() const;
+    void setTime(QDateTime time);
 
-  QString getSrc_name() const;
-  void setName(QString src_name);
-
-  QDateTime time() const;
-  void setTime(QDateTime time);
-//QString m_msg;
-private:
-  ESource m_src;
-  EStatus m_status;
-  QString src_name;
-  QString m_msg;
-  QDateTime m_time;
+  private:
+    ESource m_src;
+    EStatus m_status;
+    QString src_name;
+    QString m_msg;
+    QDateTime m_time;
 
 };
 
