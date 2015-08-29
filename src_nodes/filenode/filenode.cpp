@@ -41,7 +41,11 @@ bool CFileNode::start()
     QFile file(filename.toString());
     if(!file.exists()) {
         qCritical() << "File" << filename.toString() << "does not exist.";
+<<<<<<< HEAD
         QString error="File" + filename.toString() + "does not exist.";
+=======
+        QString error = "File " + filename.toString() + " does not exist.";
+>>>>>>> upstream/master
         setLogError(error);
         return false;
     }

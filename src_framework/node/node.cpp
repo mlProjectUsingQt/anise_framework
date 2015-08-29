@@ -157,6 +157,7 @@ void CNode::setProgress(qint8 percentage)
 
 void CNode::setLogInfo(QString info)
 {
+<<<<<<< HEAD
 
 //    if(CSettings::log()) {
         CLogInfo log;
@@ -166,10 +167,19 @@ void CNode::setLogInfo(QString info)
         log.setName(getConfig().getName());
         log.printMessage();
   //  }
+=======
+    CLogInfo log;
+    log.setSrc(CLogInfo::ESource::node);
+    log.setStatus(CLogInfo::EStatus::info);
+    log.setMsg(info);
+    log.setName(getConfig().getName());
+    log.printMessage();
+>>>>>>> upstream/master
 }
 
 void CNode::setLogError(QString error)
 {
+<<<<<<< HEAD
    // if(CSettings::log()) {
         CLogInfo log;
            log.setSrc(CLogInfo::ESource::node);
@@ -178,10 +188,19 @@ void CNode::setLogError(QString error)
         log.setName(getConfig().getName());
         log.printMessage();
     //}
+=======
+    CLogInfo log;
+    log.setSrc(CLogInfo::ESource::node);
+    log.setStatus(CLogInfo::EStatus::error);
+    log.setMsg(error);
+    log.setName(getConfig().getName());
+    log.printMessage();
+>>>>>>> upstream/master
 }
 
 void CNode::setLogWarning(QString warning)
 {
+<<<<<<< HEAD
     //if(CSettings::log()) {
         CLogInfo log;
         log.setSrc(CLogInfo::ESource::node);
@@ -190,6 +209,14 @@ void CNode::setLogWarning(QString warning)
         log.setName(getConfig().getName());
         log.printMessage();
     //}
+=======
+    CLogInfo log;
+    log.setSrc(CLogInfo::ESource::node);
+    log.setStatus(CLogInfo::EStatus::warning);
+    log.setMsg(warning);
+    log.setName(getConfig().getName());
+    log.printMessage();
+>>>>>>> upstream/master
 }
 
 

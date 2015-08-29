@@ -53,6 +53,10 @@ class CNode : public QObject
     qint32 getInputCount(QString gate_name);
     // Report progress
     void setProgress(qint8 percentage);
+<<<<<<< HEAD
+=======
+    // Report messages back to the user
+>>>>>>> upstream/master
     void setLogInfo(QString info);
     void setLogError(QString error);
     void setLogWarning(QString warning);

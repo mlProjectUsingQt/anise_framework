@@ -165,8 +165,13 @@ bool CMawiLabelsNode::parseMawiXml(const QByteArray &bytes,
         }
     }
     if(xml.hasError()) {
+<<<<<<< HEAD
         qCritical() << "Errors found while parsing MAWI XML labels.";
         QString error = "Errors found while parsing MAWI XML labels.";
+=======
+        QString error = "Errors found while parsing MAWI XML labels.";
+        qCritical() << error;
+>>>>>>> upstream/master
         setLogError(error);
         // Return stating that there was an error.
         return false;

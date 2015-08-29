@@ -2,6 +2,7 @@
 #include "messagehandler.h"
 #include "settings.h"
 #include "progressinfo.h"
+#include "loginfo.h"
 #include "node/nodefactory.h"
 #include "data/datafactory.h"
 #include "node/nodeconfig.h"
@@ -18,11 +19,15 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QStringList>
+<<<<<<< HEAD
 #define tadasa
 #ifdef tadasa
 #include"loginfo.h"
 #include<QDateTime>
 #endif
+=======
+#include <QDateTime>
+>>>>>>> upstream/master
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
@@ -45,9 +50,13 @@ CFramework::CFramework(QObject *parent/*= 0*/)
 
 void CFramework::main()
 {
+<<<<<<< HEAD
 #ifdef tadasa
 CLogInfo log;
 #endif
+=======
+    CLogInfo log;
+>>>>>>> upstream/master
 
     // Parse command line parameters.
     QCommandLineParser parser;
@@ -84,11 +93,17 @@ CLogInfo log;
         "Show the function that printed a message into the console.");
     parser.addOption(dbg_function_option);
 
+<<<<<<< HEAD
 #ifdef tadasa
     QCommandLineOption msglog("msglog",
         "Show the function that prints message log");
     parser.addOption(msglog);
    #endif
+=======
+    QCommandLineOption msglog("msglog",
+        "Show the function that prints message log");
+    parser.addOption(msglog);
+>>>>>>> upstream/master
 
     parser.process(*QCoreApplication::instance());
 
@@ -109,9 +124,13 @@ CLogInfo log;
 
     CSettings::set("progress", parser.isSet(progress_option));
     CSettings::set("dbg_function", parser.isSet(dbg_function_option));
+<<<<<<< HEAD
 #ifdef tadasa
     CSettings::set("msglog",parser.isSet(msglog));
 #endif
+=======
+    CSettings::set("msglog",parser.isSet(msglog));
+>>>>>>> upstream/master
     // Load dynamic nodes and messages into their corresponsing factories.
     // ... The data nodes should be loaded first as the nodes use them.
     CDataFactory::instance().loadLibraries();
@@ -129,29 +148,41 @@ CLogInfo log;
     if(args.size() == 0) {
         // No arguments supplied, this is a usage error at this point.
         qCritical() << "A mesh argument must be specified.";
+<<<<<<< HEAD
 #ifdef tadasa
+=======
+>>>>>>> upstream/master
         log.setMsg("A mesh argument must be specified.");
         log.setName("Anise");
         log.setSrc(CLogInfo::ESource::framework);
         log.setStatus(CLogInfo::EStatus::error);
         log.setTime(QDateTime::currentDateTime());
         log.printMessage();
+<<<<<<< HEAD
  #endif
+=======
+>>>>>>> upstream/master
         parser.showHelp(1);
         return;
     }
     if(args.at(0).isEmpty()) {
         // The mesh argument was not supplied.
         qCritical() << "An invalid mesh has been specified.";
+<<<<<<< HEAD
 #ifdef tadasa
+=======
+>>>>>>> upstream/master
         log.setMsg("An invalid mesh has been specified.");
         log.setName("Anise");
         log.setSrc(CLogInfo::ESource::framework);
         log.setStatus(CLogInfo::EStatus::error);
         log.setTime(QDateTime::currentDateTime());
         log.printMessage();
+<<<<<<< HEAD
  #endif
 
+=======
+>>>>>>> upstream/master
         parser.showHelp(1);
         return;
     }
@@ -255,6 +286,8 @@ void CFramework::printNodes()
 
 void CFramework::onMeshInit(bool success)
 {
+    CLogInfo log;
+
     CProgressInfo progress;
 CLogInfo log;
     progress.setSrc(CProgressInfo::ESource::framework);
@@ -264,14 +297,21 @@ CLogInfo log;
         progress.setMsg(CProgressInfo::EMsg::error);
         progress.setInfo("Simulation not started.");
         progress.printProgress();
+<<<<<<< HEAD
 #ifdef tadasa
+=======
+
+>>>>>>> upstream/master
         log.setMsg("Simulation not started.");
         log.setName("Anise");
         log.setSrc(CLogInfo::ESource::framework);
         log.setStatus(CLogInfo::EStatus::error);
         log.setTime(QDateTime::currentDateTime());
         log.printMessage();
+<<<<<<< HEAD
  #endif
+=======
+>>>>>>> upstream/master
 
         QCoreApplication::exit(1);
     }
@@ -299,6 +339,7 @@ void CFramework::onMeshFinish()
 
 void CFramework::initMesh(QString mesh)
 {
+    CLogInfo log;
     CProgressInfo progress;
     CLogInfo log;
     progress.setSrc(CProgressInfo::ESource::framework);
@@ -310,14 +351,22 @@ void CFramework::initMesh(QString mesh)
         progress.setMsg(CProgressInfo::EMsg::error);
         progress.setInfo(QString("The mesh '%1' could not be opened.").arg(mesh));
         progress.printProgress();
+<<<<<<< HEAD
 #ifdef tadasa
+=======
+
+>>>>>>> upstream/master
         log.setMsg(QString("The mesh '%1' could not be opened.").arg(mesh));
         log.setName("Anise");
         log.setSrc(CLogInfo::ESource::framework);
         log.setStatus(CLogInfo::EStatus::error);
         log.setTime(QDateTime::currentDateTime());
         log.printMessage();
+<<<<<<< HEAD
  #endif
+=======
+
+>>>>>>> upstream/master
         QCoreApplication::exit(1);
         return;
     }
@@ -334,14 +383,21 @@ void CFramework::initMesh(QString mesh)
         progress.setMsg(CProgressInfo::EMsg::warning);
         progress.setInfo("No simulation was started.");
         progress.printProgress();
+<<<<<<< HEAD
 #ifdef tadasa
+=======
+
+>>>>>>> upstream/master
         log.setMsg("No simulation was started.");
         log.setName("Anise");
         log.setSrc(CLogInfo::ESource::framework);
         log.setStatus(CLogInfo::EStatus::warning);
         log.setTime(QDateTime::currentDateTime());
         log.printMessage();
+<<<<<<< HEAD
  #endif
+=======
+>>>>>>> upstream/master
 
         QCoreApplication::exit(1);
         return;
