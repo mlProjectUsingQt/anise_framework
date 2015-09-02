@@ -123,18 +123,23 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
 //Training algorithm
 void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
 {
+    QString filename = "data.txt";
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream stream( &file );
     qDebug()<<"GMM Data training started...";
     // Number of attributes
     qint32 attribute_count = table->colCount();  // Col 1 --> Time Col 15 --> Length
     qint32 rows = table->rowCount();
-    int prev_hour = 0;
-    int prev_min  = 0;
-    int prev_sec  = 0;
-    ulong timeDiff = 0.01;//initial offset
+    qint32 prev_hour = 0;
+    qint32 prev_min  = 0;
+    qint32 prev_sec  = 0;
+    qlonglong timeDiff = 0.01;//initial offset
 
     for(qint32 j = 0; j < rows; ++j)
     {
-        ulong rate = 0;
+        qlonglong rate = 0;
+        qint32 length_finder = 9;
         // Get the row.
         const QList<QVariant> &row = table->getRow(j);
          for(qint32 i = 0; i < attribute_count; ++i)
@@ -143,15 +148,15 @@ void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
              {
                  QString time = row[i].toString();
                  QStringList timeList = time.split(":");
-                 int currenthour = timeList[0].toInt();
-                 int currentmin  = timeList[1].toInt();
-                 int currentsec  = timeList[2].toInt();
+                 qint32 currenthour = timeList[0].toInt();
+                 qint32 currentmin  = timeList[1].toInt();
+                 qint32 currentsec  = timeList[2].toInt();
                  //qDebug() << "current time obtained";
 
-                 if(j!=1) {
-                     uint hour = currenthour - prev_hour;
-                     uint min  = currentmin  - prev_min;
-                     uint sec  = currentsec  - prev_sec;
+                 if(j>1) {
+                     qint32 hour = currenthour - prev_hour;
+                     qint32 min  = currentmin  - prev_min;
+                     qint32 sec  = currentsec  - prev_sec;
 
                      timeDiff = hour*3600 + min*60 + sec;
                      //qDebug() << timeDiff;
@@ -165,30 +170,31 @@ void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
                      prev_min  = currentmin;
                      prev_sec  = currentsec;
                      //qDebug() << "first loop";
-                 }
+                 }                 
+             } else if(i==attribute_count-length_finder)
+             {
+                 qint32 length = row[i].toInt();
+                 stream << length <<"\n";
 
-                 if(i==attribute_count-9)
+                 //qDebug() << length;
+
+                 //rate = length/time
+                 if(timeDiff==0)
                  {
-                     qDebug() << "in length loop";
-                     uint length = row[i].toInt();
-                     //rate = length/time
-                     if(timeDiff==0)
-                     {
-                         //use initial offset
-                         rate = length/0.01;
-                         qDebug()<< "offset_rate"<<rate;
+                     //use initial offset
+                     rate = length/0.01;
+                     //qDebug()<< "offset_rate"<<rate;
 
-                     } else
-                     {
-                         //use current time period
-                         rate = length/timeDiff;
-                         qDebug()<< "current_rate"<<rate;
-                     }
+                 } else
+                 {
+                     //use current time period
+                     rate = length/timeDiff;
+                     //qDebug()<< "current_rate"<<rate;
                  }
              }
          }
 
-    }
+    } file.close();
 
 }
 
