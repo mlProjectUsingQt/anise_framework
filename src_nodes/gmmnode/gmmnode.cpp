@@ -146,8 +146,9 @@ void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
                  int currenthour = timeList[0].toInt();
                  int currentmin  = timeList[1].toInt();
                  int currentsec  = timeList[2].toInt();
+                 //qDebug() << "current time obtained";
 
-                 if(j!=0) {
+                 if(j!=1) {
                      uint hour = currenthour - prev_hour;
                      uint min  = currentmin  - prev_min;
                      uint sec  = currentsec  - prev_sec;
@@ -159,14 +160,16 @@ void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
                      prev_sec  = currentsec;
                  }
 
-                 if(j==0) {
+                 if(j==1) {
                      prev_hour = currenthour;
                      prev_min  = currentmin;
                      prev_sec  = currentsec;
+                     //qDebug() << "first loop";
                  }
 
                  if(i==attribute_count-9)
                  {
+                     qDebug() << "in length loop";
                      uint length = row[i].toInt();
                      //rate = length/time
                      if(timeDiff==0)
