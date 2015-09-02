@@ -35,13 +35,15 @@ class CGmmNode: public CNode
     virtual bool start();
     // Receive data sent by other nodes connected to this node.
     virtual bool data(QString gate_name, const CConstDataPointer &data);
+    // Trains the data
+    void trainData(const QSharedPointer<const CTableData> &table);
+    // Test the data
+    void testData(const QSharedPointer<const CTableData> &table);
 
-    // The LERAD algorithm
-    void lerad(const QSharedPointer<const CTableData> &table);
     inline qint32 rnd() const;
     // Write rules to a file.
-    void dumpRules(const QList<QString> &header,
-                   const QString &filename);
+   // void dumpRules(const QList<QString> &header,
+     //              const QString &filename);
 };
 
 qint32 CGmmNode::rnd() const
