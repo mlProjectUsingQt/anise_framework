@@ -23,6 +23,7 @@ class CGmmNode: public CNode
     QSharedPointer<CRulesetData> m_ruleset;
     QSharedPointer<const CTableData> gmm_train_table;
     QSharedPointer<const CTableData> gmm_test_table;
+    //QList<QSharedPointer<QVariant>> trainingData;
 
   public:
     // Constructor
@@ -39,7 +40,11 @@ class CGmmNode: public CNode
     void trainData(const QSharedPointer<const CTableData> &table);
     // Test the data
     void testData(const QSharedPointer<const CTableData> &table);
-
+    //Gaussian Mixture model to train the data
+    void gmmTrain(const QList<qint32> &training_data);
+   // virtual float *vector(int n0,int n);
+    float Normi(int x, float mu, float sd);
+    float Normr(float x, float mu, float sd);
     inline qint32 rnd() const;
     // Write rules to a file.
    // void dumpRules(const QList<QString> &header,
