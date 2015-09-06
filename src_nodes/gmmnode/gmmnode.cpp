@@ -581,8 +581,16 @@ void CGmmNode::gmmTrain(const QList<qint32> &training_data)
                     <<cardinality[i];
          }
 
-         qDebug()<<"Labels follow, n values.\n";
-         for (i=0; i<n; i++) qDebug()<<labs[i];
+         QString filename = "gmm_train_out.txt";
+         QFile file(filename);
+         file.open(QIODevice::WriteOnly | QIODevice::Text);
+         QTextStream stream( &file );
+
+         for (i=0; i<n; i++)
+         {
+             stream << labs[i];
+         }
+         file.close();
 }
 
 extern float CGmmNode::Normi(int x, float mu, float sd)
