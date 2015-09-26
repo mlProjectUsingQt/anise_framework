@@ -103,9 +103,11 @@ void CCsvparserNode::extractFeatures(const QString &line)
     //row<<line;
     QRegExp rx("(\\,|\\;)");//Regualr expressions for semi-colon and next line //|\\,\\;|
     QStringList dataPoints = line.split(rx,QString::SkipEmptyParts);
-    QStringList dataPoints =  line.split(",");
-    row<<dataPoints[0];
-    row<<dataPoints[1];
+    //QStringList dataPoints =  line.split(",");
+    for (qint32 i = 0 ; i<dataPoints.size(); i++)
+    {
+        row<<dataPoints[i];
+    }
 }
 
 
