@@ -5,6 +5,7 @@
 #include "node/nodeconfig.h"
 #include <QObject>
 #include <QString>
+#include <QProcess>
 
 class CPlotNode: public CNode
 {
@@ -12,6 +13,7 @@ class CPlotNode: public CNode
 
 private:
     // Data Structures
+    static QProcess *anise_process;
 
 public:
     // Constructor
