@@ -1,7 +1,8 @@
 QT += core
 QT -= gui
+QT += widgets printsupport #Added for plotting graph
 
-TARGET = plotnodenode
+TARGET = plotnode
 TEMPLATE = lib
 CONFIG += plugin
 QMAKE_CXXFLAGS += -std=c++11
@@ -28,10 +29,14 @@ CONFIG(debug,debug|release) {
 QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
-    plotnodenode.h \
-    interface.h
+    plotnode.h \
+    interface.h \
+    qcustomplot.h
 
 SOURCES += \
-    plotnodenode.cpp \
-    interface.cpp
+    plotnode.cpp \
+    interface.cpp \
+    qcustomplot.cpp
+
+DISTFILES +=
 

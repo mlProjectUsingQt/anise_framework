@@ -1,13 +1,14 @@
-#include "plotnodenode.h"
+#include "plotnode.h"
 #include "data/datafactory.h"
 #include "data/messagedata.h"
 #include <QDebug>
+#include <QFile>
 
 
 //------------------------------------------------------------------------------
 // Constructor and Destructor
 
-CPlotnodeNode::CPlotnodeNode(const CNodeConfig &config, QObject *parent/* = 0*/)
+CPlotNode::CPlotNode(const CNodeConfig &config, QObject *parent/* = 0*/)
     : CNode(config, parent)
 {
 
@@ -17,16 +18,16 @@ CPlotnodeNode::CPlotnodeNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 //------------------------------------------------------------------------------
 // Public Functions
 
-void CPlotnodeNode::configure(CNodeConfig &config)
+void CPlotNode::configure(CNodeConfig &config)
 {
     // Set a Description of this node.
-    //config.setDescription("");
+    config.setDescription("Plots numberical data onto a graph or plots it from a file");
 
     // Add parameters
-    //config.addFilename("file", "Input File", "File to be read from disk.");
-
+    config.addFilename("file", "Input File", "File to be read from disk.");
+    config.setCategory("Plot");
     // Add the gates.
-    //config.addInput("in", "misc");
+    config.addInput("in", "table");
     //config.addOutput("out", "misc");
 }
 
@@ -34,26 +35,23 @@ void CPlotnodeNode::configure(CNodeConfig &config)
 //------------------------------------------------------------------------------
 // Protected Functions
 
-bool CPlotnodeNode::start()
+bool CPlotNode::start()
 {
     qDebug() << "Start called.";
 
     return true;
 }
 
-void CPlotnodeNode::data(QString gate_name, const CConstDataPointer &data)
+bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
 {
-    qDebug() << "Data received.";
-
+    Q_UNUSED(gate_name);
+    qDebug()<<"in plot node";
+    qDebug()<<data;
     // Process framework messages.
-    if(data->getType() == "message") {
-        auto pmsg = data.staticCast<const CMessageData>();
-        QString msg = pmsg->getMessage();
-        qDebug() << "Received message:" << msg;
-        if(msg == "error") {
-            commitError("out", "Could not get tcp file data.");
-            return;
-        }
+    if(data->getType() == "table") {
+
+        qDebug() << "PlotNode works";
+        return true;
     }
 }
 

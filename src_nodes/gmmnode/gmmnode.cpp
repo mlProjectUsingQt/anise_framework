@@ -25,6 +25,8 @@ void CGmmNode::configure(CNodeConfig &config)
     config.setDescription("The LERAD Anomaly Detection Algorithm: "
                           "Build rules that describe the normal pattern "
                           "of given data.");
+    //Set the category
+    config.setCategory("Algorithm");
 
     // Add parameters
     //config.addFilename("file", "Input File", "File to be read from disk.");
@@ -54,15 +56,7 @@ void CGmmNode::configure(CNodeConfig &config)
 
 bool CGmmNode::start()
 {
-    m_ruleset = QSharedPointer<CRulesetData>(
-        static_cast<CRulesetData *>(createData("ruleset")));
-
-    if(!m_ruleset.isNull()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return true;
 }
 
 bool CGmmNode::data(QString gate_name, const CConstDataPointer &data)
@@ -76,6 +70,7 @@ bool CGmmNode::data(QString gate_name, const CConstDataPointer &data)
     if(gate_name=="in_train"  && data->getType() == "table") {
         // Process table data.
         gmm_train_table = data.staticCast<const CTableData>();
+        qDebug()<<gmm_train_table;
         if(!gmm_train_table.isNull()) {
             trainData(gmm_test_table);
             train = true;
@@ -130,6 +125,7 @@ void CGmmNode::trainData(const QSharedPointer<const CTableData> &table)
     // Number of attributes
     qint32 attribute_count = table->colCount();  // Col 1 --> Time Col 15 --> Length
     qint32 rows = table->rowCount();
+    qDebug() << rows;
     qint32 prev_hour = 0;
     qint32 prev_min  = 0;
     qint32 prev_sec  = 0;

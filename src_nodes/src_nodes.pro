@@ -8,7 +8,16 @@ SUBDIRS += \
             tablefiledumpnode \
             leradnode \
             ruleevalnode \
-         #   pythonnode \
+            pythonnode \
             mawilabelsnode \
             mawiextractornode \
-    gmmnode
+            gmmnode \
+            csvparsernode \
+            csvdumpnode \
+            plotnode
+    
+
+
+
+    
+    

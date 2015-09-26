@@ -33,7 +33,7 @@ CPythonNode::CPythonNode(const CNodeConfig &config, QObject *parent/* = 0*/)
 void CPythonNode::configure(CNodeConfig &config)
 {
     config.setDescription("Run Python scripts as nodes.");
-
+    config.setCategory("Script");
     // Add parameters
     config.addFilename("input_script", "Python Script", "Python script to execute.");
 

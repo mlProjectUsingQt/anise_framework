@@ -22,6 +22,9 @@ void CTcpDumpNode::configure(CNodeConfig &config)
 {
     config.setDescription("Parse the contents received into TCP Packets.");
 
+    //Set the category
+    config.setCategory("DataDump");
+
     // Add inputs and outputs
     config.addInput("in", "file");
     config.addOutput("out", "tcpdump");

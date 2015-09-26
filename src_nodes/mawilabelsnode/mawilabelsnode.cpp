@@ -25,6 +25,9 @@ void CMawiLabelsNode::configure(CNodeConfig &config)
     config.setDescription("Parse a file as an XML of labeled anomalies "
                           "from the MAWI dataset.");
 
+    //Set the category
+    config.setCategory("Labels");
+
     // Add parameters
     //config.addFilename("input_file", "XML File", "XML file containing the anomalies.");
 

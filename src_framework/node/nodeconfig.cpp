@@ -199,3 +199,13 @@ const QList<CNodeConfig::SGateTemplate> &CNodeConfig::getOutputTemplates() const
 // Private Slots
 
 
+
+QString CNodeConfig::getCategory() const
+{
+    return m_category;
+}
+
+void CNodeConfig::setCategory(const QString &value)
+{
+    m_category = value;
+}

@@ -163,6 +163,7 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
     QString node_name;
     QString node_class;
     QString node_desc("");
+    QString node_category("");
     QVariant v;
 
     v = node_json["name"];
@@ -179,6 +180,11 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
     v = node_json["description"];
     if(v.isValid()) {
         node_desc = v.toString();
+    }
+    //Get the category
+    v = node_json["category"];
+    if(v.isValid()) {
+        node_category = v.toString();
     }
 
     // Verify that this Node was defined properly.
@@ -257,6 +263,10 @@ bool CNodeMesh::addNode(QVariantMap &node_json)
     // Add a description if it was supplied.
     if(!node_desc.isEmpty()) {
         conf.setDescription(node_desc);
+    }
+    // Add a category if it was supplied.
+    if(!node_category.isEmpty()) {
+        conf.setCategory(node_category);
     }
 
     // Set the node Parameters.

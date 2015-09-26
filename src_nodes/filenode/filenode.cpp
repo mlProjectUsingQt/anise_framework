@@ -25,7 +25,7 @@ void CFileNode::configure(CNodeConfig &config)
                        "Path of the file to read from disk.");
     config.addBool("binary", "Binary format",
                    "Parse the file contents as binary data.");
-
+    config.setCategory("Input");
     // Add inputs and outputs
     config.addOutput("out", "file");
 }

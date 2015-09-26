@@ -25,6 +25,8 @@ void CRuleEvalNode::configure(CNodeConfig &config)
     // Set a Description of this node.
     config.setDescription("Evaluate a table of attributes against a set "
                           "of rules to score anomalies.");
+    //Set the category
+    config.setCategory("Labels");
 
     // Add parameters
     //config.addFilename("file", "Input File", "File to be read from disk.");

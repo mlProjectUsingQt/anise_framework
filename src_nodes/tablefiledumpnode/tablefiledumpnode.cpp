@@ -23,6 +23,9 @@ void CTableFileDumpNode::configure(CNodeConfig &config)
 {
     config.setDescription("Write any received table data to a file.");
 
+    //Set the category
+    config.setCategory("DataDump");
+
     // Add parameters
     config.addFilename("filename", "Output File", "File to be written.");
     config.addBool("append", "Append the table data",

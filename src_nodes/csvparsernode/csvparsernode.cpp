@@ -63,13 +63,12 @@ bool CCsvparserNode::data(QString gate_name, const CConstDataPointer &data)
                qDebug() << "File opened successfully";               
                QTextStream stream( &file );
                QString line = stream.readAll();
-               QRegExp rx("(\\;|\\n)");//Regualr expressions for semi-colon and next line
+               QRegExp rx("(\\n)");//Regualr expressions for semi-colon and next line //|\\,\\;|
                QStringList lines = line.split(rx,QString::SkipEmptyParts);
                qint32 lineSize = lines.size();
                parser_table->reserveRows(parser_table->rowCount()+lineSize);
+
                // Optimize the row allocation space for the table.
-              /* csv_table->reserveRows(csv_table->rowCount()+
-                                      lines.size());*/
                for (int i = 0; i<lines.size(); ++i)
                {
                    extractFeatures(lines[i]);
@@ -90,7 +89,8 @@ bool CCsvparserNode::createDataTable()
                 static_cast<CTableData *>(createData("table")));
 
     if(!parser_table.isNull()) {
-        parser_table->addHeader("Dataitem");
+        parser_table->addHeader("x-axis");
+        parser_table->addHeader("y-axis");
         return true;
     } else {
         return false;
@@ -100,35 +100,14 @@ bool CCsvparserNode::createDataTable()
 void CCsvparserNode::extractFeatures(const QString &line)
 {
     QList<QVariant> &row = parser_table->newRow();
-    row<<line;
-    //qDebug() << line;
+    //row<<line;
+    QRegExp rx("(\\,|\\;)");//Regualr expressions for semi-colon and next line //|\\,\\;|
+    QStringList dataPoints = line.split(rx,QString::SkipEmptyParts);
+    QStringList dataPoints =  line.split(",");
+    row<<dataPoints[0];
+    row<<dataPoints[1];
 }
 
-/*void CCsvparserNode::parseIntoCSV(const QSharedPointer<const CTableData> &table)
-{
-    qint32 attribute_count = table->colCount();    
-    qint32 rows = table->rowCount();    
-    QString csv_value;
-    //Write to a csv file
-    QString filename = "table_data.csv";
-    QFile file(filename);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream stream( &file );
-
-    for(qint32 j = 0; j < rows; ++j)
-    {
-        const QList<QVariant> &row = parser_table->getRow(j);
-        for(qint32 i = 0; i < attribute_count; ++i)
-        {
-          QString value  = row[i].toString()+";";
-          csv_value = csv_value+value;
-          //csv_table->
-        }       
-        stream << csv_value<<endl;
-        csv_value="";
-    }    
-    file.close();
-}*/
 
 
 

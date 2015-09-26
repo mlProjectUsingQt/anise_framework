@@ -26,6 +26,8 @@ void CLeradNode::configure(CNodeConfig &config)
     config.setDescription("The LERAD Anomaly Detection Algorithm: "
                           "Build rules that describe the normal pattern "
                           "of given data.");
+    //Set the category
+    config.setCategory("Algorithm");
 
     // Add parameters
     //config.addFilename("file", "Input File", "File to be read from disk.");
@@ -95,6 +97,7 @@ void CLeradNode::lerad(const QSharedPointer<const CTableData> &table)
 
     // Number of attributes
     qint32 attribute_count = table->colCount();
+    qDebug() << "attribute_count" << attribute_count;
     if(attribute_count < 2) {
         qWarning() << "LERAD needs at least 2 attributes to create rules.";
         warning = "LERAD needs at least 2 attributes to create rules.";
@@ -110,9 +113,12 @@ void CLeradNode::lerad(const QSharedPointer<const CTableData> &table)
     for(qint32 j = 0; j < rows; ++j) {
         // Get the row.
         const QList<QVariant> &row = table->getRow(j);
+        //qDebug()<<"number of rows ::"<<row;
         // Iterate the attributes of the row.
         Antecedent t;
         t.reserve(attribute_count);
+
+        //qDebug() << "DATE TIME DEST_IP DEST_PORT SRC_IP SRC_PORT DUR F1 F2 F3 LEN W1 ... W8";
         for(qint32 i = 0; i < attribute_count; ++i) {
             // Convert attribute to nominal.
             QString attr = row[i].toString();
@@ -126,7 +132,7 @@ void CLeradNode::lerad(const QSharedPointer<const CTableData> &table)
     info="LERAD:: Dataset size:"+QVariant(dataset.size()).toString();
     setLogInfo(info);
 
-    if(dataset.size() < 2) {
+    if(dataset.size() > 2) {
         qWarning() << "LERAD:: Cannot work with less than two tuples.";
         warning="LERAD:: Cannot work with less than two tuples.";
         setLogWarning(warning);
