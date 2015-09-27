@@ -25,9 +25,7 @@ void CPlotNode::configure(CNodeConfig &config)
 {
     // Set a Description of this node.
     config.setDescription("Plots numberical data onto a graph or plots it from a file");
-
-    // Add parameters
-    config.addFilename("file", "Input File", "File to be read from disk.");
+    //Set a Category for this node.
     config.setCategory("Plot");
     // Add the gates.
     config.addInput("in", "table");
