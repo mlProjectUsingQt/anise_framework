@@ -30,13 +30,11 @@ QMAKE_CLEAN += $$DESTDIR/*$$TARGET*
 
 HEADERS += \
     plotnode.h \
-    interface.h \
-    qcustomplot.h
+    interface.h
 
 SOURCES += \
     plotnode.cpp \
-    interface.cpp \
-    qcustomplot.cpp
+    interface.cpp
 
 DISTFILES +=
 

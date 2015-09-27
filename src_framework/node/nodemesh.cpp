@@ -124,13 +124,13 @@ void CNodeMesh::startSimulation()
     for(i = m_nodes.begin(); i != m_nodes.end(); ++i) {
         auto node = i.value();
         input_gates = node->inputGatesSize();
-        qDebug().nospace().noquote()
-                << "Message before";
+       // qDebug().nospace().noquote()
+             //   << "Message before";
 
         if(input_gates == 0) {
             node->processData("", pmsg);
-            qDebug().nospace().noquote()
-                    << "Message after";
+           // qDebug().nospace().noquote()
+                  //  << "Message after";
             simulation_started = true;
         }
     }

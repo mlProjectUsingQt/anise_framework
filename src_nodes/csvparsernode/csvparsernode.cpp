@@ -60,7 +60,7 @@ bool CCsvparserNode::data(QString gate_name, const CConstDataPointer &data)
                QVariant filename = getConfig().getParameter("file")->value;               
                QFile file(filename.toString());
                file.open(QIODevice::ReadOnly | QIODevice::Text);
-               qDebug() << "File opened successfully";               
+               //qDebug() << "File opened successfully";
                QTextStream stream( &file );
                QString line = stream.readAll();
                QRegExp rx("(\\n)");//Regualr expressions for semi-colon and next line //|\\,\\;|
@@ -76,7 +76,7 @@ bool CCsvparserNode::data(QString gate_name, const CConstDataPointer &data)
 
                 commit("out", parser_table);
                 parser_table.clear();
-                qDebug() << "data commited";
+                //qDebug() << "data commited";
          }
          return true;
      }
