@@ -13,7 +13,13 @@ class CPlotNode: public CNode
 
 private:
     // Data Structures
-    static QProcess *anise_process;
+    static QProcess *anise_process; 
+    QString datamin;
+    QString datamax;
+    //QStringList mean;
+    //QStringList standard_deviation;
+    QStringList plot_lines;
+    QString normals;
 
 public:
     // Constructor
