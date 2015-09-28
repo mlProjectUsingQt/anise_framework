@@ -77,7 +77,8 @@ class CGmmNode: public CNode
     // Function creates a feature table with classification of GMM.
     bool createFeaturesTable();
     //
-    void extractFeatures(const double &mean, const double &standardDev, const double &segProb);
+    void extractFeatures(const double &mean, const double &standardDev, const double &segProb,
+                         const float &min, const float &max);
     // Function provides the gaussian distribution of the data
     float Normi(int x, float mu, float sd);
     float Normr(float x, float mu, float sd);

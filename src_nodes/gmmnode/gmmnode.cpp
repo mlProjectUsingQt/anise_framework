@@ -237,7 +237,7 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
         qDebug()<<header;
         for (i=0; i<segment_number; i++)
         {
-            extractFeatures(test_mu[i],test_sd[i],test_segment_probs[i]);
+            extractFeatures(test_mu[i],test_sd[i],test_segment_probs[i],datamin,datamax);
             qDebug()<<i<<"       "<<test_mu[i]<<"  "<<test_sd[i]<<"  "
                     <<test_segment_probs[i]<<"  "<<test_cardinality[i];
         }
@@ -705,6 +705,8 @@ bool CGmmNode::createFeaturesTable()
         classif_table->addHeader("Mu");
         classif_table->addHeader("Sd");
         classif_table->addHeader("segProb");
+        classif_table->addHeader("dataMin");
+        classif_table->addHeader("dataMax");
 
         return true;
     } else
@@ -713,10 +715,13 @@ bool CGmmNode::createFeaturesTable()
     }
 }
 
-void CGmmNode::extractFeatures(const double &mean, const double &standardDev, const double &segProb)
+void CGmmNode::extractFeatures(const double &mean, const double &standardDev, const double &segProb,
+                               const float &min, const float &max)
 {
     QList<QVariant> &classificationData = classif_table->newRow();
     classificationData<<mean;
     classificationData<<standardDev;
     classificationData<<segProb;
+    classificationData<<min;
+    classificationData<<max;
 }
