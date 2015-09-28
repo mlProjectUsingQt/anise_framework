@@ -17,18 +17,17 @@ class CGmmNode: public CNode
 {
   Q_OBJECT
 
-  typedef QMap<Antecedent, CRule> Ruleset;
-
   private:
     // Data Structures
-    QSharedPointer<CRulesetData> m_ruleset;
+    QSharedPointer<CTableData> classif_table;
     QSharedPointer<const CTableData> gmm_train_table;
     QSharedPointer<const CTableData> gmm_test_table;
+    int column_count;
     /**
     * Declaration for data training
     */
      QList<float> data_points;
-     qint32 segmentNum = 3;
+     //qint32 segmentNum = 3;
      qint32 numOfData;
      float *orig_vector, *in_vector,*labs;//original_vector, input_vector, labels
      float datamin  = 1.0E30, datamax  = -1.0E30, ival, pmax, mlikedenom, p;
@@ -36,18 +35,21 @@ class CGmmNode: public CNode
             mu_numer, mu_denom, sd_numer, sd_denom, loglik_sum;
      double mu[MAX_SEGMENTS],sd[MAX_SEGMENTS], segment_probs[MAX_SEGMENTS], denom[256];
      double delta_lookup[256][MAX_SEGMENTS], dnorm_lookup[256][MAX_SEGMENTS];
-     int max_iterations, segment_number =6, empty_levels, current_breakpoint,
+     int max_iterations, segment_number, empty_levels, current_breakpoint,
          initialization_error,current_total, done, initialization_multiplier,
-         iter_counter;
+         iter_counter,iseg;
      int sd_counter[MAX_SEGMENTS], mu_counter[MAX_SEGMENTS],  greyscale_histogram[256],
          initial_breakpoints[(MAX_SEGMENTS+1)], cardinality[MAX_SEGMENTS];
-
+     QString tempTrainfileName = "gmmTrainClass.dat";
+     QString testDatafilename = "testingData.dat";
     /**
     * Declaration for data testing
     */
     QList<float> test_data_points;
     qint32 numOfTestData;
     float *test_vector, *in_test_vector, *test_labs;
+    double test_mu[MAX_SEGMENTS], test_sd[MAX_SEGMENTS],test_segment_probs[MAX_SEGMENTS];
+    int test_cardinality[MAX_SEGMENTS];
     /**
     * Flags for training and testing data
     */
@@ -65,28 +67,20 @@ class CGmmNode: public CNode
     // Function called when the simulation is started.
     virtual bool start();
     // Receive data sent by other nodes connected to this node.
-    virtual bool data(QString gate_name, const CConstDataPointer &data);
-    //Converts the table data into a list
-    //QList<QString> extractListFromTable(const QSharedPointer<const CTableData> &table);
-    // Trains the data
+    virtual bool data(QString gate_name, const CConstDataPointer &data);    
+    // Function provides the parameters on applying the EM alogrithm for GMM.
     void trainData(const QSharedPointer<const CTableData> &table);
-    // Test the data
+    // Function provides the classification of the data for GMM.
     void testData(const QSharedPointer<const CTableData> &table);
-    //Gaussian Mixture model to train the data
-    void gmmTrain(const QList<qint32> &training_data);
+    // Function allocates space for vectors during progress.
     float* vector(int n0,int n);
+    // Function creates a feature table with classification of GMM.
+    bool createFeaturesTable();
+    //
+    void extractFeatures(const double &mean, const double &standardDev, const double &segProb);
+    // Function provides the gaussian distribution of the data
     float Normi(int x, float mu, float sd);
     float Normr(float x, float mu, float sd);
-    inline qint32 rnd() const;
-    // Write rules to a file.
-   // void dumpRules(const QList<QString> &header,
-     //              const QString &filename);
 };
-
-//qint32 CGmmNode::rnd() const
-//{
-    // 30-31 bit random number
-  //  return (qrand() + (qrand() << 15)) & 0x7fffffff;
-//}
 
 #endif // GMMNODE_H
