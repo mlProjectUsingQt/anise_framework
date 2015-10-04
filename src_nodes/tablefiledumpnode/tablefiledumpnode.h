@@ -28,6 +28,8 @@ class CTableFileDumpNode: public CNode
     // Print the supplied data to a file.
     bool printTable(QSharedPointer<const CTableData> &table,
                     QString filename, bool append);
+    //Dump Data into a *.csv file
+    bool dumpIntoFile(const QSharedPointer<const CTableData> &table);
 };
 
 #endif // TABLEFILEDUMPNODE_H

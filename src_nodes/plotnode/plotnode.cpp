@@ -55,9 +55,9 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
 
     // Process framework messages.
     if(data->getType() == "table") {
-        // Process table data.        
-        auto table = data.staticCast<const CTableData>();       
-        qint32 rows = table->rowCount();         
+        // Process table data.
+        auto table = data.staticCast<const CTableData>();
+        qint32 rows = table->rowCount();
         //qint32 attribute_count = table->colCount();
         QString filename = "plotInfo.dat";
         QFile file(filename);
@@ -76,9 +76,13 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
                 //standard_deviation.append(gausses[col_count-(col_count-1)].toString());
                 //datamin.append(gausses[col_count-1].toString());
                 //datamax.append(gausses[col_count].toString());
+                QString segment = "normal(x," + gausses[col_count-col_count].toString()
+                        + "," + gausses[col_count-(col_count-1)].toString() + ","
+                        + gausses[col_count-(col_count-1)+1].toString() + ")";
                 QString line = "normal(x," + gausses[col_count-col_count].toString()
                         + "," + gausses[col_count-(col_count-1)].toString() + ")";
                 plot_lines.append(line);
+                plot_gmm.append(segment);
             }
 
             for (int i=0; i<plot_lines.size(); i++)
@@ -86,10 +90,12 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
                 if(!normals.isEmpty())
                 {
                     normals = normals+","+plot_lines[i];
+                    gmm = gmm + "+" + plot_gmm[i];
 
                 } else if(normals.isEmpty())
                 {
                     normals = plot_lines[i];
+                    gmm = plot_gmm[i];
                 }
 
             }
@@ -100,11 +106,23 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
 
             QString gPlot = terminalSet+
                     "set output 'gauss_plot.png'\n"
+                    "set clip two\n"
+                    "set style fill  transparent solid 0.50 noborder\n"
+                    "set key title 'Gaussian Distributions'\n"
+                    "set key noinvert samplen 1 spacing 1 width 0 height 0 \n"
+                    "set style data lines\n"
+                    "set style function filledcurves y1=0\n"
                     "set boxwidth 0.1\n"
                     "set xrange"+"["+datamin+":"+datamax+"]\n"
                     "normal(x, mu, sd) = (1/(sd*sqrt(2*pi)))*exp(-(x-mu)**2/(2*sd**2))\n"
                     "plot "+ normals;
-           // "normal(x,-0.25,0.95),normal(x,1.5,0.05)";
+            QString gPlot_1 = terminalSet+
+                    "set output 'gmm_plot.png'\n"
+                    "set boxwidth 0.1\n"
+                    "set xrange"+"["+datamin+":"+datamax+"]\n"
+                    "normal(x, mu, sd, prob) = prob*(1/(sd*sqrt(2*pi)))*exp(-(x-mu)**2/(2*sd**2))\n"
+                    "plot "+ gmm + "title 'Gaussian Mixture Model'";
+                    // "normal(x,-0.25,0.95),normal(x,1.5,0.05)";
             QString exe = "gnuplot";
             QString plotFileName = "guassPlot.gnu";
             QFile plotFile(plotFileName);
@@ -117,6 +135,17 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
             anise_process->start(cmd);
             anise_process->waitForFinished();
             plotFile.close();
+            QString plotFileName_1 = "gmmPlot.gnu";
+            QFile plotFile_1(plotFileName_1);
+            if (plotFile_1.open(QIODevice::ReadWrite))
+            {
+                    QTextStream stream(&plotFile_1);
+                    stream << gPlot_1 << endl;
+            }
+            QString cmd_1 = exe + " " + plotFileName_1;
+            anise_process->start(cmd_1);
+            anise_process->waitForFinished();
+            plotFile_1.close();
         } else
         {
             QStringList output;
@@ -160,4 +189,3 @@ bool CPlotNode::data(QString gate_name, const CConstDataPointer &data)
     }
     return false;
 }
-

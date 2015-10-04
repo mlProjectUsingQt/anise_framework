@@ -55,8 +55,8 @@ public:
 private:
   ESource m_src;
   EStatus m_status;
-  QString src_name;
   QString m_msg;
+  QString src_name;
   QDateTime m_time;
 
 };

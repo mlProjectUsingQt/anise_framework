@@ -42,7 +42,7 @@ bool CCsvparserNode::start()
     // Check if the user supplied file exists before we start processing.
     QFile file(filename.toString());
     if(!file.exists()) {
-        QString error="File" + filename.toString() + "does not exist.";
+        QString error="File" + filename.toString() + " does not exist.";
         qCritical() << error;
         setLogError(error);
         return false;
@@ -109,8 +109,3 @@ void CCsvparserNode::extractFeatures(const QString &line)
         row<<dataPoints[i];
     }
 }
-
-
-
-
-

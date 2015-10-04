@@ -40,8 +40,8 @@ bool CFileNode::start()
     // Check if the user supplied file exists before we start processing.
     QFile file(filename.toString());
     if(!file.exists()) {
-        qCritical() << "File" << filename.toString() << "does not exist.";
-        QString error="File" + filename.toString() + "does not exist.";
+        qCritical() << "File" << filename.toString() << " does not exist.";
+        QString error="File" + filename.toString() + " does not exist.";
         setLogError(error);
         return false;
     }
