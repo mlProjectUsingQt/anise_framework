@@ -130,8 +130,13 @@ bool CGmmNode::data(QString gate_name, const CConstDataPointer &data)
 void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
 {
     int i=0,k=0;
+    //Output the result of test data into a text file
+    QFile file("./testDataOutput.txt");
+    file.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Truncate);
+    QTextStream testDataStream( &file );
     qint32 rows = 0;
     QString warning,info;
+    testDataStream<<"data-point"<<"\t"<<"segment"<<"\t"<<"probability"<<"\n";
     qDebug()<<"Classifying the data as per GMM....";
     if(table)
     {
@@ -147,14 +152,8 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
             }
         }
         qDebug() << "Number of data points for classification::: "<<test_data_points.size();
-        info= "Number of data points for classification::: "+test_data_points.size();
+        info= "Number of data points for classification::: "+QString::number(test_data_points.size());
         setLogInfo(info);
-        for (int i=0; i<rows; i++)
-        {
-            QList<QVariant> const &row = table->getRow(i);
-            QString val = row.at(0).toString();
-            test_data_points.append(val.toFloat());
-        }
         numOfTestData = test_data_points.size();
         test_vector = vector(0,numOfTestData-1); /* Input test data */
         in_test_vector = vector(0,numOfTestData-1); /* Input data */
@@ -204,7 +203,6 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
         {
             test_cardinality[i] = 0;
         }
-
         for (i=0; i < numOfTestData; i++)
         {
             test_labs[i] = 0.0;
@@ -225,9 +223,9 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
             }
             /* Increment cluster numbers by one so sequence is 1, 2, ... */
             test_labs[i] = iseg + 1;
-            test_cardinality[iseg] += 1;
+            testDataStream<<ival<<"\t\t"<<iseg<<"\t"<<pmax<<"\n";
+            test_cardinality[iseg] =test_cardinality[iseg]+ 1;
         }
-
         QString header = "Segment,    Mu,       SD,       Mix.Prob,    Card.";
         qDebug()<<"Test Labels are 1, 2, ... no. clusters.\n";
         qDebug()<<header;
@@ -240,6 +238,7 @@ void CGmmNode::testData(const QSharedPointer<const CTableData> &table)
 
         qDebug() << "GMM Classification done for the data";
     }
+    file.close();
 }
 
 /** GAUSSIAN MIXTURE MODEL. CLASSIFICATION OF TRAINING DATA

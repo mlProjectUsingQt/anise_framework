@@ -85,8 +85,6 @@ bool CPythonNode::data(QString gate_name, const CConstDataPointer &data)
         QVariant result = module.call("main",
             QVariantList() << QVariant::fromValue(p_table.data())
                            << QVariant::fromValue(result_table.data()));
-
-        // If the python script returned true, commit the results' table.
         if(result.toBool()) {
             commit("out", result_table);
         }
@@ -151,4 +149,3 @@ void CPythonNode::initPython()
 
     python_init = true;
 }
-

@@ -78,11 +78,6 @@ void CLogInfo::printMessage()
                 << this->toJsonString();
     }
     else {
-        qDebug().nospace().noquote()
-                << '@'
-                << this->toJsonString();
-
-
         // For humans.
         QString message("");
 

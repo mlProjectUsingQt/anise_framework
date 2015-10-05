@@ -27,8 +27,8 @@ void CPlotNode::configure(CNodeConfig &config)
     config.setDescription("Plots numberical data onto a graph or plots it from a file");
     //Set a Category for this node.
     config.setCategory("Plot");
-    config.addBool("guassian_plot", "Plots for gaussain data",
-                   "Can plot gaussain curves for GMM, else will be a 1D scatter plot",
+    config.addBool("guassian_plot", "Plots for gaussian data",
+                   "Can plot gaussian curves for GMM, else will be a 1D scatter plot",
                    true);
     config.addString("file_name", "Name of the png file",
                      "The graphical information"
